@@ -1,6 +1,6 @@
 # Victory Extraction tester handoff
 
-A responsive, dependency-free GitHub Pages site with tester account details and a client-ready reply for the Victory Extraction 1.0.4 (32) app test.
+A responsive, dependency-free GitHub Pages site with tester account details and the Fiverr access note for the Victory Extraction 1.0.4 (32) app test.
 
 ## Publish with GitHub Pages
 
