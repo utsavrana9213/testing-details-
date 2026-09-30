@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101715">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Tester access details and a clear testing plan for Victory Extraction 1.0.4 (32).">
+    <title>Victory Extraction · Testing details</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #19231f;
+        --muted: #63716a;
+        --paper: #f4f5ef;
+        --white: #fff;
+        --line: #dce2da;
+        --forest: #18372d;
+        --forest-deep: #101715;
+        --lime: #c9f36b;
+        --lime-soft: #e7f7bd;
+        --blue: #d8e8f5;
+        --coral: #f5c7b2;
+        --shadow: 0 24px 80px rgb(17 38 30 / 12%);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body { margin: 0; color: var(--ink); background: var(--paper); }
+      button, a { font: inherit; }
+      a { color: inherit; }
+
+      .topbar {
+        width: min(1120px, calc(100% - 40px));
+        margin: auto;
+        height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .brand { display: flex; gap: 11px; align-items: center; font-weight: 750; letter-spacing: -.03em; }
+      .brand-mark {
+        width: 34px; height: 34px; border-radius: 11px;
+        display: grid; place-items: center; background: var(--lime); color: var(--forest-deep);
+        font-size: 13px; font-weight: 900; letter-spacing: -.06em;
+      }
+      .brand small { display: block; color: var(--muted); font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; margin-top: 2px; }
+      .top-links { display: flex; align-items: center; gap: 26px; color: #53645b; font-size: 13px; font-weight: 650; }
+      .top-links a { text-decoration: none; }
+      .top-links a:hover { color: var(--forest); }
+
+      .hero-wrap { background: var(--forest-deep); color: #f6f8f1; overflow: hidden; position: relative; }
+      .hero-wrap::after {
+        content: ""; position: absolute; width: 520px; height: 520px; right: -140px; top: -245px;
+        border-radius: 50%; border: 1px solid rgb(201 243 107 / 18%); box-shadow: 0 0 0 58px rgb(201 243 107 / 3%), 0 0 0 116px rgb(201 243 107 / 3%);
+        pointer-events: none;
+      }
+      .hero {
+        width: min(1120px, calc(100% - 40px)); margin: auto; padding: 75px 0 68px;
+        display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 58px; align-items: end; position: relative; z-index: 1;
+      }
+      .eyebrow { display: flex; align-items: center; gap: 10px; color: var(--lime); font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+      .eyebrow::before { content: ""; width: 20px; height: 1px; background: currentColor; }
+      h1 { max-width: 690px; margin: 18px 0 18px; font-size: clamp(40px, 6.5vw, 72px); line-height: .99; letter-spacing: -.065em; font-weight: 680; }
+      h1 em { color: var(--lime); font-style: normal; }
+      .hero-copy { max-width: 565px; margin: 0; color: #bbc6be; font-size: 16px; line-height: 1.7; }
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 29px; }
+      .button { min-height: 47px; padding: 0 17px; border: 1px solid transparent; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; text-decoration: none; cursor: pointer; font-size: 13px; font-weight: 750; transition: transform .18s ease, background .18s ease; }
+      .button:hover { transform: translateY(-2px); }
+      .button-primary { background: var(--lime); color: var(--forest-deep); }
+      .button-primary:hover { background: #d7ff87; }
+      .button-quiet { background: transparent; border-color: #526159; color: #eff4ed; }
+      .button-quiet:hover { background: #1c2823; }
+      .hero-stamp { justify-self: end; width: 230px; padding: 20px; border: 1px solid #394a40; border-radius: 14px; background: rgb(255 255 255 / 3%); transform: rotate(2deg); }
+      .hero-stamp span { display: block; color: #9caf9f; font-size: 10px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+      .hero-stamp strong { display: block; margin-top: 9px; color: var(--lime); font-size: 32px; line-height: 1; letter-spacing: -.06em; }
+      .hero-stamp p { margin: 8px 0 0; color: #d5ddd5; font-size: 12px; }
+
+      main { width: min(1120px, calc(100% - 40px)); margin: auto; }
+      .reply-card { margin-top: -1px; padding: 25px 30px 27px; background: var(--white); border: 1px solid var(--line); border-top: 0; border-radius: 0 0 16px 16px; box-shadow: var(--shadow); }
+      .reply-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+      .reply-label { display: flex; align-items: center; gap: 10px; color: var(--forest); font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+      .reply-label i { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 8px; background: var(--lime-soft); font-style: normal; letter-spacing: 0; }
+      .copy-button { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: #405149; cursor: pointer; font-size: 12px; font-weight: 700; }
+      .copy-button:hover { border-color: #a8bbad; background: #f8faf6; }
+      .reply-text { max-width: 850px; margin: 16px 0 0 36px; color: #526159; font-size: 14px; line-height: 1.8; }
+
+      .section { padding: 74px 0 0; }
+      .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 23px; }
+      .section-kicker { margin: 0 0 9px; color: #68806e; font-size: 10px; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+      h2 { margin: 0; font-size: clamp(27px, 3.2vw, 38px); line-height: 1.1; letter-spacing: -.05em; font-weight: 700; }
+      .section-intro { max-width: 355px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+      .account-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .account-card { min-height: 228px; padding: 23px; border-radius: 14px; border: 1px solid var(--line); background: var(--white); }
+      .account-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+      .platform { display: flex; align-items: center; gap: 12px; }
+      .platform-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 12px; background: #edf4e9; color: var(--forest); font-size: 17px; font-weight: 850; }
+      .android .platform-icon { background: #e8f1f8; color: #35566c; }
+      .platform h3 { margin: 0; font-size: 17px; letter-spacing: -.03em; }
+      .platform p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+      .access-pill { padding: 6px 9px; border-radius: 99px; background: #edf5dd; color: #57732d; font-size: 10px; font-weight: 800; white-space: nowrap; }
+      .android .access-pill { background: #e7f1f9; color: #476a81; }
+      .email-list { display: grid; gap: 9px; margin-top: 23px; }
+      .email-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 11px 10px 13px; border: 1px solid #e8ece6; border-radius: 8px; background: #fafbf8; }
+      .email { overflow-wrap: anywhere; color: #28382f; font-size: 13px; font-weight: 650; letter-spacing: -.01em; }
+      .email-row button { flex: 0 0 auto; padding: 6px 9px; border: 0; border-radius: 6px; background: #e9f1e5; color: #385146; cursor: pointer; font-size: 10px; font-weight: 800; }
+      .email-row button:hover { background: var(--lime-soft); }
+
+      .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+      .step-card { position: relative; min-height: 230px; padding: 20px 19px; border: 1px solid var(--line); border-radius: 13px; background: var(--white); }
+      .step-number { width: 29px; height: 29px; display: grid; place-items: center; margin-bottom: 25px; border-radius: 9px; background: var(--forest); color: var(--lime); font-size: 12px; font-weight: 800; }
+      .step-card h3 { margin: 0 0 9px; font-size: 15px; letter-spacing: -.025em; }
+      .step-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
+      .step-card strong { color: #33463a; }
+      .step-card.alert { background: #f8f8f1; border-color: #e1e2d3; }
+      .step-card.alert .step-number { background: #f2e7c6; color: #6a5427; }
+      .day-strip { display: flex; gap: 5px; align-items: center; margin-top: 17px; }
+      .day-strip span { width: 13px; height: 19px; border-radius: 4px; background: #deead2; }
+      .day-strip span:first-child { background: var(--lime); }
+      .day-strip span:last-child { background: #bfd8eb; }
+      .day-strip b { margin-left: 4px; color: #6d7b72; font-size: 10px; }
+
+      .details-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 16px; }
+      .info-panel { padding: 25px; border-radius: 14px; background: var(--forest); color: #f6f8f1; }
+      .info-panel h3 { margin: 0 0 10px; color: var(--lime); font-size: 17px; letter-spacing: -.03em; }
+      .info-panel p { margin: 0; color: #d1ddd2; font-size: 13px; line-height: 1.75; }
+      .info-panel .small-note { margin-top: 15px; padding-top: 15px; border-top: 1px solid #42564a; color: #aebdb1; font-size: 11px; }
+      .bug-panel { padding: 25px; border: 1px solid var(--line); border-radius: 14px; background: var(--white); }
+      .bug-panel h3 { margin: 0 0 9px; font-size: 17px; letter-spacing: -.03em; }
+      .bug-panel > p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+      .bug-points { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 17px; }
+      .bug-points span { display: flex; align-items: center; gap: 7px; color: #405148; font-size: 11px; font-weight: 700; }
+      .bug-points b { width: 19px; height: 19px; display: grid; place-items: center; border-radius: 6px; background: var(--lime-soft); color: #4e6827; font-size: 10px; }
+
+      .footer { display: flex; justify-content: space-between; gap: 20px; margin-top: 70px; padding: 22px 0 30px; border-top: 1px solid var(--line); color: #758179; font-size: 11px; }
+      .footer strong { color: #4e5e54; }
+      .toast { position: fixed; left: 50%; bottom: 24px; z-index: 10; padding: 11px 16px; border-radius: 99px; background: #17251e; color: #f5f8f2; box-shadow: 0 10px 35px rgb(0 0 0 / 20%); font-size: 12px; font-weight: 700; transform: translate(-50%, 16px); opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+      .toast.show { opacity: 1; transform: translate(-50%, 0); }
+      .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+      @media (max-width: 760px) {
+        .topbar { height: 66px; }
+        .top-links { gap: 14px; font-size: 11px; }
+        .hero { grid-template-columns: 1fr; padding: 58px 0 51px; gap: 30px; }
+        .hero-stamp { justify-self: start; width: auto; min-width: 215px; }
+        .section { padding-top: 55px; }
+        .section-head { align-items: flex-start; flex-direction: column; gap: 10px; }
+        .section-intro { max-width: 100%; }
+        .account-grid, .details-grid { grid-template-columns: 1fr; }
+        .timeline { grid-template-columns: 1fr 1fr; }
+        .step-card { min-height: 205px; }
+      }
+      @media (max-width: 480px) {
+        .topbar, main, .hero { width: min(100% - 28px, 1120px); }
+        .top-links { gap: 11px; }
+        .top-links a:last-child { display: none; }
+        .hero { padding-top: 48px; }
+        h1 { font-size: 43px; }
+        .hero-copy { font-size: 14px; }
+        .reply-card { padding: 19px 16px 21px; }
+        .reply-head { align-items: flex-start; }
+        .reply-text { margin-left: 0; font-size: 13px; }
+        .copy-button { padding: 8px; font-size: 0; }
+        .copy-button svg { width: 16px; height: 16px; }
+        .timeline { grid-template-columns: 1fr; }
+        .step-card { min-height: auto; padding: 18px; }
+        .step-number { margin-bottom: 15px; }
+        .footer { flex-direction: column; margin-top: 48px; }
+        .bug-points { grid-template-columns: 1fr; }
+      }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+      @media print {
+        :root { --paper: #fff; }
+        .topbar, .hero-actions, .hero-stamp, .copy-button, .email-row button, .toast { display: none !important; }
+        .hero { display: block; padding: 32px 0; }
+        .hero-wrap { background: #fff; color: var(--ink); }
+        .hero-copy, .eyebrow { color: var(--muted); }
+        h1 em { color: var(--forest); }
+        .reply-card { box-shadow: none; }
+        .section { padding-top: 28px; }
+        .account-card, .step-card, .bug-panel, .info-panel { break-inside: avoid; }
+        .info-panel { background: #eef3ed; color: var(--ink); }
+        .info-panel h3, .info-panel p, .info-panel .small-note { color: var(--ink); }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Victory Extraction testing details home">
+        <span class="brand-mark">VE</span>
+        <span>Victory Extraction<small>Tester handoff</small></span>
+      </a>
+      <nav class="top-links" aria-label="Page sections">
+        <a href="#accounts">Test accounts</a>
+        <a href="#steps">How I’ll test</a>
+        <a href="#fiverr">Fiverr note</a>
+      </nav>
+    </header>
+
+    <div class="hero-wrap" id="top">
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <div class="eyebrow">Testing handoff · build 1.0.4 (32)</div>
+          <h1 id="page-title">Ready to test <em>Victory Extraction?</em></h1>
+          <p class="hero-copy">Thanks for sharing the test plan. Here are the Apple and Google accounts to invite, plus a clear outline of how I’ll test the build and report any issues.</p>
+          <div class="hero-actions">
+            <button class="button button-primary" type="button" data-copy-reply>
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M7 6V4.8A1.8 1.8 0 0 1 8.8 3h6.4A1.8 1.8 0 0 1 17 4.8v8.4a1.8 1.8 0 0 1-1.8 1.8H14M5 6h6.2A1.8 1.8 0 0 1 13 7.8v8.4a1.8 1.8 0 0 1-1.8 1.8H5a1.8 1.8 0 0 1-1.8-1.8V7.8A1.8 1.8 0 0 1 5 6Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              Copy my reply
+            </button>
+            <button class="button button-quiet" type="button" onclick="window.print()">Print / save PDF</button>
+          </div>
+        </div>
+        <aside class="hero-stamp" aria-label="App version">
+          <span>Build under test</span>
+          <strong>1.0.4</strong>
+          <p>iOS TestFlight + Android Play test</p>
+        </aside>
+      </section>
+    </div>
+
+    <main>
+      <section class="reply-card" aria-labelledby="reply-title">
+        <div class="reply-head">
+          <div class="reply-label" id="reply-title"><i>↗</i> Client-ready reply</div>
+          <button class="copy-button" type="button" data-copy-reply aria-label="Copy client-ready reply">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M7 6V4.8A1.8 1.8 0 0 1 8.8 3h6.4A1.8 1.8 0 0 1 17 4.8v8.4a1.8 1.8 0 0 1-1.8 1.8H14M5 6h6.2A1.8 1.8 0 0 1 13 7.8v8.4a1.8 1.8 0 0 1-1.8 1.8H5a1.8 1.8 0 0 1-1.8-1.8V7.8A1.8 1.8 0 0 1 5 6Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Copy reply
+          </button>
+        </div>
+        <p class="reply-text">Thanks for the detailed test plan. I’ve reviewed it and will follow the steps below. Please add the listed accounts to the matching testing programs. I’ll report every issue in the bug table, one row per bug, with screenshots or screen recordings where possible. I’ll also report an issue even if another tester has already found it.</p>
+      </section>
+
+      <section class="section" id="accounts" aria-labelledby="accounts-title">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">01 / Test accounts</p>
+            <h2 id="accounts-title">Please add these accounts</h2>
+          </div>
+          <p class="section-intro">Invite each address to its matching platform. These are provided only for access to the Victory Extraction test builds.</p>
+        </div>
+        <div class="account-grid">
+          <article class="account-card ios">
+            <div class="account-top">
+              <div class="platform">
+                <span class="platform-icon" aria-hidden="true"></span>
+                <div><h3>iPhone / iOS</h3><p>Apple ID · TestFlight</p></div>
+              </div>
+              <span class="access-pill">2 tester accounts</span>
+            </div>
+            <div class="email-list">
+              <div class="email-row"><span class="email">Workingforaarav@gmail.com</span><button type="button" data-copy="Workingforaarav@gmail.com">Copy</button></div>
+              <div class="email-row"><span class="email">deepanshuranag007@gmail.com</span><button type="button" data-copy="deepanshuranag007@gmail.com">Copy</button></div>
+            </div>
+          </article>
+          <article class="account-card android">
+            <div class="account-top">
+              <div class="platform">
+                <span class="platform-icon" aria-hidden="true">▶</span>
+                <div><h3>Android</h3><p>Google account · Play test</p></div>
+              </div>
+              <span class="access-pill">1 tester account</span>
+            </div>
+            <div class="email-list">
+              <div class="email-row"><span class="email">utsavrana572@gmail.com</span><button type="button" data-copy="utsavrana572@gmail.com">Copy</button></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="steps" aria-labelledby="steps-title">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">02 / Test plan</p>
+            <h2 id="steps-title">A thorough pass, account by account</h2>
+          </div>
+          <p class="section-intro">I’ll cover both the day-by-day progression and the full 30-day unlock flow while keeping the test purchase safe.</p>
+        </div>
+        <div class="timeline">
+          <article class="step-card">
+            <div class="step-number">01</div>
+            <h3>Install the build</h3>
+            <p>On iPhone, install TestFlight, accept the invite, and install <strong>Victory Extraction 1.0.4 (32)</strong>. On Android, join from the Play link and install the test build.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-number">02</div>
+            <h3>Keep a baseline</h3>
+            <p>The app opens one day per midnight. I’ll leave my other accounts unchanged to check daily unlocking and the end of the free Prologue.</p>
+            <div class="day-strip" aria-label="One new day becomes available at a time"><span></span><span></span><span></span><span></span><span></span><b>one day / midnight</b></div>
+          </article>
+          <article class="step-card alert">
+            <div class="step-number">03</div>
+            <h3>Unlock all 30 days</h3>
+            <p>I’ll use one account for the free test purchase, then send you that account’s email so you can unlock all 30 days on it. For Android, I’ll wait until you confirm it’s a license tester. If Google asks for a real card, I’ll stop.</p>
+          </article>
+          <article class="step-card">
+            <div class="step-number">04</div>
+            <h3>Log every bug</h3>
+            <p>I’ll add one row per bug to the provided table and attach a screenshot or screen recording. I’ll report duplicates too, including wording, layout, and slow screens.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="fiverr" aria-labelledby="fiverr-title">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">03 / Clear boundaries</p>
+            <h2 id="fiverr-title">Access stays access</h2>
+          </div>
+        </div>
+        <div class="details-grid">
+          <article class="info-panel">
+            <h3>Fiverr communication</h3>
+            <p>These email addresses are shared solely so you can add the matching Apple and Google accounts as testers for this app. They are not for moving our conversation or business off Fiverr. I’ll keep project communication and any order-related activity on Fiverr.</p>
+            <p class="small-note">The addresses are for TestFlight / Google Play access only.</p>
+          </article>
+          <article class="bug-panel">
+            <h3>About the optional tip and review</h3>
+            <p>Thank you for offering a tip for useful findings. Any tip should be handled through Fiverr. A Fiverr review is optional and should reflect your genuine experience; it isn’t tied to the tip or the number of bugs found.</p>
+            <div class="bug-points"><span><b>✓</b> Honest feedback</span><span><b>✓</b> Optional review</span><span><b>✓</b> No off-platform payment</span><span><b>✓</b> Bug reports in the table</span></div>
+          </article>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span><strong>Victory Extraction</strong> · Tester handoff</span>
+        <span>Prepared for build 1.0.4 (32)</span>
+      </footer>
+    </main>
+
+    <div class="toast" role="status" aria-live="polite"></div>
+    <script>
+      const toast = document.querySelector('.toast');
+      let toastTimer;
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+      }
+      async function copyText(text, label) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast(label);
+        } catch {
+          const field = document.createElement('textarea');
+          field.value = text;
+          field.setAttribute('readonly', '');
+          field.style.position = 'fixed';
+          field.style.opacity = '0';
+          document.body.append(field);
+          field.select();
+          document.execCommand('copy');
+          field.remove();
+          showToast(label);
+        }
+      }
+      const reply = `Thanks for the detailed test plan. I’ve reviewed it and will follow it.\n\nPlease add these accounts to the matching test programs:\n\niPhone / TestFlight:\n• Workingforaarav@gmail.com\n• deepanshuranag007@gmail.com\n\nAndroid / Google Play:\n• utsavrana572@gmail.com\n\nI’ll install Victory Extraction 1.0.4 (32), keep my other accounts unchanged for day-by-day unlocking and the end of the free Prologue, and use one account for a free test purchase to check all 30 days at once. I’ll send you that account’s email for the unlock. On Android, I’ll wait for your confirmation that I’m a license tester; if Google asks for a real card, I’ll stop.\n\nI’ll report every issue in the attached bug table, one row per bug, with screenshots or screen recordings, and I’ll report duplicates too.\n\nThese email addresses are provided only to add the matching accounts as app testers. I’ll keep project communication and order-related activity on Fiverr. Any tip should be handled through Fiverr, and any review remains optional and based on genuine experience, independent of tips or bug count.\n\nThanks!`;
+      document.querySelectorAll('[data-copy-reply]').forEach(button => button.addEventListener('click', () => copyText(reply, 'Reply copied')));
+      document.querySelectorAll('[data-copy]').forEach(button => button.addEventListener('click', () => copyText(button.dataset.copy, 'Email copied')));
+    </script>
+  </body>
+</html>
